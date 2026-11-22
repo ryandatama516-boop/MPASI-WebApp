@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Stok Freezer MPASI</title>
+
+  <!-- PWA & Ikon Aplikasi -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#FDFBF7" />
+  <link rel="icon" type="image/png" sizes="192x192" href="mpasi-freezer-logo-192.png" />
+  <link rel="apple-touch-icon" sizes="1024x1024" href="mpasi-freezer-logo-1024.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Stok MPASI" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FDFBF7;
+      --card: #FFFFFF;
+      --primary: #E08A74;
+      --primary-soft: #FCECE7;
+      --text: #3E342F;
+      --muted: #8C7E77;
+      --border: #F0E6DF;
+      --sage-bg: #E7F3EC;
+      --sage-text: #2F6F4E;
+      --honey-bg: #FEF5DC;
+      --honey-text: #9C6B14;
+      --coral-bg: #FDEAEA;
+      --coral-text: #C0392B;
+      --shadow: 0 4px 16px rgba(105, 80, 65, 0.06);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding-bottom: 92px;
+    }
+
+    /* Splash Screen */
+    #splashScreen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    #splashScreen.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .splash-logo {
+      width: 148px;
+      height: 148px;
+      border-radius: 32px;
+      box-shadow: 0 12px 30px rgba(105, 80, 65, 0.12);
+      object-fit: cover;
+      animation: popIn 0.5s ease;
+    }
+    .splash-text {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Header dengan Logo */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(253, 251, 247, 0.94);
+      backdrop-filter: blur(8px);
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      object-fit: cover;
+      box-shadow: 0 2px 8px rgba(105, 80, 65, 0.1);
+      flex-shrink: 0;
+    }
+    .brand h1 { margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text); line-height: 1.2; }
+    .brand p { margin: 2px 0 0; font-size: 0.78rem; color: var(--muted); }
+    .btn-refresh {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 11px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--text);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    main { max-width: 600px; margin: 0 auto; padding: 14px 16px; }
+
+    /* Summary Cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .sum-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 12px 10px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .sum-card .num { font-size: 1.45rem; font-weight: 800; line-height: 1.1; }
+    .sum-card .lbl { font-size: 0.72rem; font-weight: 700; margin-top: 4px; color: var(--muted); }
+    .sum-aman { background: var(--sage-bg); border-color: transparent; }
+    .sum-aman .num, .sum-aman .lbl { color: var(--sage-text); }
+    .sum-warning { background: var(--honey-bg); border-color: transparent; }
+    .sum-warning .num, .sum-warning .lbl { color: var(--honey-text); }
+    .sum-danger { background: var(--coral-bg); border-color: transparent; }
+    .sum-danger .num, .sum-danger .lbl { color: var(--coral-text); }
+
+    /* Search & Filter */
+    .search-box {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 10px;
+      outline: none;
+    }
+    .search-box:focus { border-color: var(--primary); }
+
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      scrollbar-width: none;
+    }
+    .filter-row::-webkit-scrollbar { display: none; }
+    .pill {
+      white-space: nowrap;
+      padding: 7px 14px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .pill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Stock Card */
+    .stock-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--sage-text);
+    }
+    .stock-card.status-warning { border-left-color: #E0A82E; }
+    .stock-card.status-danger { border-left-color: #D9534F; }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .card-title { margin: 0; font-size: 1.05rem; font-weight: 800; }
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+      align-items: center;
+    }
+    .badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 8px;
+    }
+    .badge-cat { background: var(--primary-soft); color: #B85C46; }
+    .badge-aman { background: var(--sage-bg); color: var(--sage-text); }
+    .badge-warning { background: var(--honey-bg); color: var(--honey-text); }
+    .badge-danger { background: var(--coral-bg); color: var(--coral-text); }
+
+    .price-tag {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #B85C46;
+      white-space: nowrap;
+    }
+
+    .card-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin: 8px 0 0;
+    }
+
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+    }
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-qty {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-qty:active { transform: scale(0.94); background: var(--primary-soft); }
+    .qty-text { font-size: 0.95rem; font-weight: 800; min-width: 72px; text-align: center; }
+
+    .btn-edit {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 7px 12px;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    /* Shopping List */
+    .section-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 16px 0 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .restock-card, .shop-item {
+      background: var(--card);
+      border-radius: 15px;
+      padding: 12px 14px;
+      margin-bottom: 9px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .shop-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      cursor: pointer;
+    }
+    .check-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .shop-item.checked .check-circle { background: var(--sage-text); border-color: var(--sage-text); }
+    .shop-item.checked .shop-name { text-decoration: line-through; color: var(--muted); }
+    .shop-name { font-weight: 700; font-size: 0.95rem; }
+    .shop-qty { font-size: 0.8rem; color: var(--muted); }
+
+    .btn-sm {
+      background: var(--primary-soft);
+      color: #B85C46;
+      border: none;
+      border-radius: 10px;
+      padding: 7px 11px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .btn-del-icon {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    .add-shop-form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .add-shop-form input {
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .add-shop-form input:first-child { flex: 2; }
+    .add-shop-form input:nth-child(2) { flex: 1; width: 90px; }
+    .add-shop-form button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 0 16px;
+      font-family: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* FAB */
+    .fab {
+      position: fixed;
+      right: 20px;
+      bottom: 84px;
+      width: 58px;
+      height: 58px;
+      border-radius: 20px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-size: 1.8rem;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(224, 138, 116, 0.45);
+      cursor: pointer;
+      z-index: 30;
+    }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0 14px;
+      z-index: 25;
+    }
+    .nav-btn {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 6px 20px;
+      border-radius: 12px;
+    }
+    .nav-btn.active {
+      background: var(--primary-soft);
+      color: #B85C46;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(62, 52, 47, 0.45);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--bg);
+      width: 100%;
+      max-width: 560px;
+      border-radius: 24px 24px 0 0;
+      padding: 20px 18px 28px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal h2 { margin: 0 0 14px; font-size: 1.15rem; font-weight: 800; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 16px; }
+    .btn-primary {
+      flex: 2;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      padding: 13px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .btn-secondary {
+      flex: 1;
+      background: var(--card);
+      color: var(--text);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 13px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-danger-outline {
+      width: 100%;
+      margin-top: 10px;
+      background: var(--coral-bg);
+      color: var(--coral-text);
+      border: none;
+      border-radius: 12px;
+      padding: 11px;
+      font-family: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 36px 16px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .toast {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 99px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      z-index: 100;
+      display: none;
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- SPLASH SCREEN -->
+  <div id="splashScreen">
+    <img src="mpasi-freezer-logo-1024.png" alt="Logo Stok Freezer MPASI" class="splash-logo" />
+    <div class="splash-text">Menyiapkan data freezer...</div>
+  </div>
+
+  <div id="toast" class="toast">Menyimpan...</div>
+
+  <header>
+    <div class="brand">
+      <img src="mpasi-freezer-logo-192.png" alt="Logo MPASI" class="brand-logo" />
+      <div>
+        <h1>Stok Freezer MPASI</h1>
+        <p id="syncStatus">Memuat data...</p>
+      </div>
+    </div>
+    <button class="btn-refresh" onclick="loadData()">↻ Muat Ulang</button>
+  </header>
+
+  <main>
+    <!-- TAB 1: STOK FREEZER -->
+    <section id="tabStok">
+      <div class="summary-grid">
+        <div class="sum-card sum-aman">
+          <div class="num" id="countAman">0</div>
+          <div class="lbl">Aman</div>
+        </div>
+        <div class="sum-card sum-warning">
+          <div class="num" id="countWarning">0</div>
+          <div class="lbl">≤ 7 Hari</div>
+        </div>
+        <div class="sum-card sum-danger">
+          <div class="num" id="countDanger">0</div>
+          <div class="lbl">Expired / 0</div>
+        </div>
+      </div>
+
+      <input type="text" id="searchInput" class="search-box" placeholder="Cari bahan MPASI..." oninput="renderStok()" />
+
+      <div class="filter-row" id="filterRow">
+        <button class="pill active" onclick="setFilter('Semua', this)">Semua</button>
+        <button class="pill" onclick="setFilter('Prohe', this)">Prohe</button>
+        <button class="pill" onclick="setFilter('Prona', this)">Prona</button>
+        <button class="pill" onclick="setFilter('Karbo', this)">Karbo</button>
+        <button class="pill" onclick="setFilter('Sayur/Buah', this)">Sayur/Buah</button>
+        <button class="pill" onclick="setFilter('Kaldu/Bumbu', this)">Kaldu/Bumbu</button>
+        <button class="pill" onclick="setFilter('Olahan Jadi', this)">Olahan Jadi</button>
+      </div>
+
+      <div id="stokList"></div>
+    </section>
+
+    <!-- TAB 2: DAFTAR BELANJA -->
+    <section id="tabBelanja" class="hidden">
+      <div class="section-title">
+        <span>Perlu Restock (Stok ≤ 1)</span>
+      </div>
+      <div id="restockList"></div>
+
+      <div class="section-title">
+        <span>Catatan Belanja Tambahan</span>
+        <button class="btn-sm" onclick="clearCheckedShop()">Hapus Dicentang</button>
+      </div>
+      <form class="add-shop-form" onsubmit="addShopItem(event)">
+        <input type="text" id="shopNama" placeholder="Nama barang..." required />
+        <input type="text" id="shopQty" placeholder="Jml (2 pack)" />
+        <button type="submit">+</button>
+      </form>
+      <div id="shopList"></div>
+    </section>
+  </main>
+
+  <button class="fab" id="fabAdd" onclick="openModal()">+</button>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="navStok" onclick="switchTab('stok')">❄️ Stok Freezer</button>
+    <button class="nav-btn" id="navBelanja" onclick="switchTab('belanja')">🛒 Daftar Belanja</button>
+  </nav>
+
+  <!-- MODAL TAMBAH / EDIT STOK -->
+  <div class="modal-backdrop" id="stockModal">
+    <div class="modal">
+      <h2 id="modalTitle">Tambah Bahan Baru</h2>
+      <form id="stockForm" onsubmit="saveStock(event)">
+        <input type="hidden" id="fId" />
+        <div class="form-group">
+          <label>Nama Bahan</label>
+          <input type="text" id="fNama" placeholder="Contoh: Kaldu Ayam Kampung" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Kategori</label>
+            <select id="fKategori">
+              <option>Prohe</option>
+              <option>Prona</option>
+              <option>Karbo</option>
+              <option>Sayur/Buah</option>
+              <option>Kaldu/Bumbu</option>
+              <option>Olahan Jadi</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Harga Jual (Rp)</label>
+            <input type="number" id="fHarga" placeholder="25000" min="0" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Jumlah Stok</label>
+            <input type="number" id="fJumlah" value="1" min="0" required />
+          </div>
+          <div class="form-group">
+            <label>Satuan</label>
+            <select id="fSatuan">
+              <option>Pack</option>
+              <option>Porsi</option>
+              <option>Cube</option>
+              <option>Jar/Wadah</option>
+              <option>Gram</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tanggal Masuk</label>
+            <input type="date" id="fTglMasuk" required />
+          </div>
+          <div class="form-group">
+            <label>Tanggal Expired</label>
+            <input type="date" id="fTglExpired" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Catatan (Opsional)</label>
+          <input type="text" id="fCatatan" placeholder="Rak atas, kemasan 200ml, dll." />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" onclick="closeModal()">Batal</button>
+          <button type="submit" class="btn-primary">Simpan</button>
+        </div>
+        <button type="button" id="btnDeleteStock" class="btn-danger-outline hidden" onclick="deleteCurrentStock()">Hapus Bahan Ini</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // GANTI URL DI BAWAH INI DENGAN WEB APP URL DARI GOOGLE APPS SCRIPT
+    const API_URL = 'https://script.google.com/macros/s/AKfycbycko8SZr30SO9afr4LoKHaRvVfXzn-fpz5DOUuRZ_cjzdRTNeCSMAvYA1AJOeF0Vm9Nw/exec';
+
+    let stokData = [];
+    let belanjaData = [];
+    let activeFilter = 'Semua';
+
+    const rpFormat = new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      maximumFractionDigits: 0
+    });
+
+    function hideSplash() {
+      const splash = document.getElementById('splashScreen');
+      if (splash) splash.classList.add('hide');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => t.style.display = 'none', 2200);
+    }
+
+    function todayISO() {
+      const d = new Date();
+      return d.toISOString().split('T')[0];
+    }
+
+    function daysUntil(dateStr) {
+      if (!dateStr) return 999;
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      const exp = new Date(dateStr + 'T00:00:00');
+      return Math.ceil((exp - now) / (1000 * 60 * 60 * 24));
+    }
+
+    async function apiPost(payload) {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      return res.json();
+    }
+
+    async function loadData() {
+      const statusEl = document.getElementById('syncStatus');
+      if (API_URL === 'PASTE_URL_WEB_APP_DISINI') {
+        statusEl.textContent = 'Tempel Web App URL dulu di kode';
+        setTimeout(hideSplash, 700);
+        return;
+      }
+      statusEl.textContent = 'Menyinkronkan...';
+      try {
+        const res = await fetch(API_URL);
+        const json = await res.json();
+        if (json.status === 'success') {
+          stokData = json.stok || [];
+          belanjaData = json.belanja || [];
+          statusEl.textContent = 'Tersinkron • ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+          renderStok();
+          renderBelanja();
+        } else {
+          statusEl.textContent = 'Gagal memuat data';
+        }
+      } catch (err) {
+        statusEl.textContent = 'Koneksi bermasalah';
+      } finally {
+        setTimeout(hideSplash, 450);
+      }
+    }
+
+    function setFilter(cat, el) {
+      activeFilter = cat;
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      renderStok();
+    }
+
+    function renderStok() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      let aman = 0, warning = 0, danger = 0;
+
+      stokData.forEach(item => {
+        const days = daysUntil(item.tglExpired);
+        if (Number(item.jumlah) <= 0 || days < 0) danger++;
+        else if (days <= 7) warning++;
+        else aman++;
+      });
+
+      document.getElementById('countAman').textContent = aman;
+      document.getElementById('countWarning').textContent = warning;
+      document.getElementById('countDanger').textContent = danger;
+
+      const filtered = stokData
+        .filter(i => activeFilter === 'Semua' || i.kategori === activeFilter)
+        .filter(i => (i.nama || '').toLowerCase().includes(q) || (i.catatan || '').toLowerCase().includes(q))
+        .sort((a, b) => daysUntil(a.tglExpired) - daysUntil(b.tglExpired));
+
+      const container = document.getElementById('stokList');
+      if (!filtered.length) {
+        container.innerHTML = '<div class="empty-state">Belum ada bahan di kategori ini.</div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const days = daysUntil(item.tglExpired);
+        const qty = Number(item.jumlah) || 0;
+        let statusClass = 'status-aman';
+        let badgeClass = 'badge-aman';
+        let statusLabel = `Exp ${item.tglExpired} (${days} hr)`;
+
+        if (qty <= 0) {
+          statusClass = 'status-danger';
+          badgeClass = 'badge-danger';
+          statusLabel = 'Stok Habis';
+        } else if (days < 0) {
+          statusClass = 'status-danger';
+          badgeClass = 'badge-danger';
+          statusLabel = `Lewat ${Math.abs(days)} hr (${item.tglExpired})`;
+        } else if (days <= 7) {
+          statusClass = 'status-warning';
+          badgeClass = 'badge-warning';
+          statusLabel = days === 0 ? 'Expired Hari Ini!' : `Sisa ${days} hr (${item.tglExpired})`;
+        }
+
+        return `
+          <div class="stock-card ${statusClass}">
+            <div class="card-top">
+              <div>
+                <h3 class="card-title">${escapeHtml(item.nama)}</h3>
+                <div class="card-meta">
+                  <span class="badge badge-cat">${escapeHtml(item.kategori)}</span>
+                  <span class="badge ${badgeClass}">${statusLabel}</span>
+                </div>
+              </div>
+              <div class="price-tag">${rpFormat.format(Number(item.harga) || 0)}</div>
+            </div>
+            ${item.catatan ? `<p class="card-note">📝 ${escapeHtml(item.catatan)}</p>` : ''}
+            <div class="card-bottom">
+              <div class="qty-control">
+                <button class="btn-qty" onclick="changeQty('${item.id}', -1)">−</button>
+                <span class="qty-text">${qty} ${escapeHtml(item.satuan)}</span>
+                <button class="btn-qty" onclick="changeQty('${item.id}', 1)">+</button>
+              </div>
+              <button class="btn-edit" onclick="openModal('${item.id}')">Edit</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderBelanja() {
+      const restockEl = document.getElementById('restockList');
+      const lowItems = stokData.filter(i => Number(i.jumlah) <= 1);
+      if (!lowItems.length) {
+        restockEl.innerHTML = '<div class="empty-state" style="padding:14px;">Semua stok freezer masih aman (> 1).</div>';
+      } else {
+        restockEl.innerHTML = lowItems.map(item => `
+          <div class="restock-card">
+            <div>
+              <div class="shop-name">${escapeHtml(item.nama)}</div>
+              <div class="shop-qty">Sisa: ${item.jumlah} ${escapeHtml(item.satuan)} • ${rpFormat.format(Number(item.harga) || 0)}</div>
+            </div>
+            <button class="btn-sm" onclick="openModal('${item.id}')">+ Restock</button>
+          </div>
+        `).join('');
+      }
+
+      const shopEl = document.getElementById('shopList');
+      if (!belanjaData.length) {
+        shopEl.innerHTML = '<div class="empty-state" style="padding:18px;">Belum ada catatan belanja tambahan.</div>';
+      } else {
+        shopEl.innerHTML = belanjaData.map(item => {
+          const isDone = item.status === 'Sudah';
+          return `
+            <div class="shop-item ${isDone ? 'checked' : ''}">
+              <div class="shop-left" onclick="toggleShop('${item.id}')">
+                <div class="check-circle">${isDone ? '✓' : ''}</div>
+                <div>
+                  <div class="shop-name">${escapeHtml(item.namaItem)}</div>
+                  <div class="shop-qty">${escapeHtml(item.jumlahBeli || '')}</div>
+                </div>
+              </div>
+              <button class="btn-del-icon" onclick="deleteShop('${item.id}')">✕</button>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    async function changeQty(id, delta) {
+      const item = stokData.find(i => i.id === id);
+      if (!item) return;
+      const newQty = Math.max(0, (Number(item.jumlah) || 0) + delta);
+      item.jumlah = newQty;
+      renderStok();
+      renderBelanja();
+      showToast('Stok diperbarui');
+      await apiPost({ action: 'updateQty', id, jumlah: newQty });
+    }
+
+    function openModal(id = null) {
+      const modal = document.getElementById('stockModal');
+      const title = document.getElementById('modalTitle');
+      const btnDel = document.getElementById('btnDeleteStock');
+
+      if (id) {
+        const item = stokData.find(i => i.id === id);
+        if (!item) return;
+        title.textContent = 'Edit Bahan';
+        document.getElementById('fId').value = item.id;
+        document.getElementById('fNama').value = item.nama;
+        document.getElementById('fKategori').value = item.kategori;
+        document.getElementById('fHarga').value = item.harga || 0;
+        document.getElementById('fJumlah').value = item.jumlah;
+        document.getElementById('fSatuan').value = item.satuan;
+        document.getElementById('fTglMasuk').value = item.tglMasuk || todayISO();
+        document.getElementById('fTglExpired').value = item.tglExpired || '';
+        document.getElementById('fCatatan').value = item.catatan || '';
+        btnDel.classList.remove('hidden');
+      } else {
+        title.textContent = 'Tambah Bahan Baru';
+        document.getElementById('stockForm').reset();
+        document.getElementById('fId').value = '';
+        document.getElementById('fTglMasuk').value = todayISO();
+        btnDel.classList.add('hidden');
+      }
+      modal.classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('stockModal').classList.remove('open');
+    }
+
+    async function saveStock(e) {
+      e.preventDefault();
+      const id = document.getElementById('fId').value;
+      const data = {
+        id,
+        nama: document.getElementById('fNama').value.trim(),
+        kategori: document.getElementById('fKategori').value,
+        harga: Number(document.getElementById('fHarga').value) || 0,
+        jumlah: Number(document.getElementById('fJumlah').value) || 0,
+        satuan: document.getElementById('fSatuan').value,
+        tglMasuk: document.getElementById('fTglMasuk').value,
+        tglExpired: document.getElementById('fTglExpired').value,
+        catatan: document.getElementById('fCatatan').value.trim()
+      };
+
+      closeModal();
+      showToast('Menyimpan data...');
+      await apiPost({ action: id ? 'updateStock' : 'addStock', data });
+      await loadData();
+      showToast('Tersimpan!');
+    }
+
+    async function deleteCurrentStock() {
+      const id = document.getElementById('fId').value;
+      if (!id || !confirm('Hapus bahan ini dari freezer?')) return;
+      closeModal();
+      showToast('Menghapus...');
+      await apiPost({ action: 'deleteStock', id });
+      await loadData();
+    }
+
+    async function addShopItem(e) {
+      e.preventDefault();
+      const namaItem = document.getElementById('shopNama').value.trim();
+      const jumlahBeli = document.getElementById('shopQty').value.trim();
+      if (!namaItem) return;
+      document.getElementById('shopNama').value = '';
+      document.getElementById('shopQty').value = '';
+      showToast('Menambahkan...');
+      await apiPost({ action: 'addShop', namaItem, jumlahBeli });
+      await loadData();
+    }
+
+    async function toggleShop(id) {
+      const item = belanjaData.find(i => i.id === id);
+      if (!item) return;
+      item.status = item.status === 'Sudah' ? 'Belum' : 'Sudah';
+      renderBelanja();
+      await apiPost({ action: 'toggleShop', id });
+    }
+
+    async function deleteShop(id) {
+      belanjaData = belanjaData.filter(i => i.id !== id);
+      renderBelanja();
+      await apiPost({ action: 'deleteShop', id });
+    }
+
+    async function clearCheckedShop() {
+      if (!confirm('Hapus semua item belanja yang sudah dicentang?')) return;
+      showToast('Membersihkan...');
+      await apiPost({ action: 'clearCheckedShop' });
+      await loadData();
+    }
+
+    function switchTab(tab) {
+      const isStok = tab === 'stok';
+      document.getElementById('tabStok').classList.toggle('hidden', !isStok);
+      document.getElementById('tabBelanja').classList.toggle('hidden', isStok);
+      document.getElementById('fabAdd').classList.toggle('hidden', !isStok);
+      document.getElementById('navStok').classList.toggle('active', isStok);
+      document.getElementById('navBelanja').classList.toggle('active', !isStok);
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[m]);
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
