@@ -41,7 +41,7 @@
       font-family: 'Nunito', sans-serif;
       background: var(--bg);
       color: var(--text);
-      padding-bottom: 92px;
+      padding-bottom: 96px;
     }
 
     /* Splash Screen */
@@ -71,7 +71,7 @@
     }
     .splash-text {
       margin-top: 16px;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       font-weight: 700;
       color: var(--muted);
     }
@@ -80,12 +80,12 @@
       to { transform: scale(1); opacity: 1; }
     }
 
-    /* Header dengan Logo */
+    /* Header */
     header {
       position: sticky;
       top: 0;
       z-index: 20;
-      background: rgba(253, 251, 247, 0.94);
+      background: rgba(253, 251, 247, 0.95);
       backdrop-filter: blur(8px);
       padding: 14px 16px 12px;
       border-bottom: 1px solid var(--border);
@@ -111,12 +111,12 @@
     .brand p { margin: 2px 0 0; font-size: 0.78rem; color: var(--muted); }
     .btn-refresh {
       background: var(--card);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: 12px;
-      padding: 8px 11px;
+      padding: 9px 12px;
       font-family: inherit;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--text);
       cursor: pointer;
       white-space: nowrap;
@@ -124,7 +124,7 @@
 
     main { max-width: 600px; margin: 0 auto; padding: 14px 16px; }
 
-    /* Summary Cards */
+    /* Summary Cards (Bisa diklik untuk filter status) */
     .summary-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -134,29 +134,30 @@
     .sum-card {
       background: var(--card);
       border-radius: 16px;
-      padding: 12px 10px;
+      padding: 13px 10px;
       text-align: center;
       box-shadow: var(--shadow);
-      border: 1px solid var(--border);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease;
     }
-    .sum-card .num { font-size: 1.45rem; font-weight: 800; line-height: 1.1; }
-    .sum-card .lbl { font-size: 0.72rem; font-weight: 700; margin-top: 4px; color: var(--muted); }
-    .sum-aman { background: var(--sage-bg); border-color: transparent; }
-    .sum-aman .num, .sum-aman .lbl { color: var(--sage-text); }
-    .sum-warning { background: var(--honey-bg); border-color: transparent; }
-    .sum-warning .num, .sum-warning .lbl { color: var(--honey-text); }
-    .sum-danger { background: var(--coral-bg); border-color: transparent; }
-    .sum-danger .num, .sum-danger .lbl { color: var(--coral-text); }
+    .sum-card:active { transform: scale(0.96); }
+    .sum-card.selected { border-color: var(--text); }
+    .sum-card .num { font-size: 1.5rem; font-weight: 800; line-height: 1.1; }
+    .sum-card .lbl { font-size: 0.74rem; font-weight: 700; margin-top: 4px; }
+    .sum-aman { background: var(--sage-bg); color: var(--sage-text); }
+    .sum-warning { background: var(--honey-bg); color: var(--honey-text); }
+    .sum-danger { background: var(--coral-bg); color: var(--coral-text); }
 
     /* Search & Filter */
     .search-box {
       width: 100%;
-      padding: 12px 16px;
+      padding: 13px 16px;
       border-radius: 14px;
       border: 1.5px solid var(--border);
       background: var(--card);
       font-family: inherit;
-      font-size: 0.95rem;
+      font-size: 16px;
       color: var(--text);
       margin-bottom: 10px;
       outline: none;
@@ -174,12 +175,12 @@
     .filter-row::-webkit-scrollbar { display: none; }
     .pill {
       white-space: nowrap;
-      padding: 7px 14px;
+      padding: 8px 15px;
       border-radius: 99px;
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       background: var(--card);
       font-family: inherit;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--muted);
       cursor: pointer;
@@ -194,7 +195,7 @@
     .stock-card {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 15px;
+      padding: 16px;
       margin-bottom: 12px;
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
@@ -209,7 +210,7 @@
       align-items: flex-start;
       gap: 10px;
     }
-    .card-title { margin: 0; font-size: 1.05rem; font-weight: 800; }
+    .card-title { margin: 0; font-size: 1.08rem; font-weight: 800; }
     .card-meta {
       display: flex;
       flex-wrap: wrap;
@@ -218,9 +219,9 @@
       align-items: center;
     }
     .badge {
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 800;
-      padding: 3px 9px;
+      padding: 4px 10px;
       border-radius: 8px;
     }
     .badge-cat { background: var(--primary-soft); color: #B85C46; }
@@ -229,14 +230,14 @@
     .badge-danger { background: var(--coral-bg); color: var(--coral-text); }
 
     .price-tag {
-      font-size: 0.95rem;
+      font-size: 0.98rem;
       font-weight: 800;
       color: #B85C46;
       white-space: nowrap;
     }
 
     .card-note {
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       color: var(--muted);
       margin: 8px 0 0;
     }
@@ -245,8 +246,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 12px;
-      padding-top: 10px;
+      margin-top: 13px;
+      padding-top: 11px;
       border-top: 1px dashed var(--border);
     }
     .qty-control {
@@ -255,12 +256,12 @@
       gap: 10px;
     }
     .btn-qty {
-      width: 36px;
-      height: 36px;
-      border-radius: 11px;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
       border: 1.5px solid var(--border);
       background: var(--bg);
-      font-size: 1.2rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: var(--text);
       cursor: pointer;
@@ -268,38 +269,38 @@
       align-items: center;
       justify-content: center;
     }
-    .btn-qty:active { transform: scale(0.94); background: var(--primary-soft); }
-    .qty-text { font-size: 0.95rem; font-weight: 800; min-width: 72px; text-align: center; }
+    .btn-qty:active { transform: scale(0.92); background: var(--primary-soft); }
+    .qty-text { font-size: 1rem; font-weight: 800; min-width: 78px; text-align: center; }
 
     .btn-edit {
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 7px 12px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      padding: 9px 14px;
       font-family: inherit;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      color: var(--muted);
+      color: var(--text);
       cursor: pointer;
     }
 
     /* Shopping List */
     .section-title {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       font-weight: 800;
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin: 16px 0 10px;
+      margin: 18px 0 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     .restock-card, .shop-item {
       background: var(--card);
-      border-radius: 15px;
-      padding: 12px 14px;
-      margin-bottom: 9px;
+      border-radius: 16px;
+      padding: 13px 14px;
+      margin-bottom: 10px;
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
       display: flex;
@@ -315,8 +316,8 @@
       cursor: pointer;
     }
     .check-circle {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       border-radius: 8px;
       border: 2px solid var(--primary);
       display: flex;
@@ -328,15 +329,27 @@
     }
     .shop-item.checked .check-circle { background: var(--sage-text); border-color: var(--sage-text); }
     .shop-item.checked .shop-name { text-decoration: line-through; color: var(--muted); }
-    .shop-name { font-weight: 700; font-size: 0.95rem; }
-    .shop-qty { font-size: 0.8rem; color: var(--muted); }
+    .shop-name { font-weight: 800; font-size: 0.98rem; }
+    .shop-qty { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
 
+    .btn-restock {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      padding: 9px 12px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
     .btn-sm {
       background: var(--primary-soft);
       color: #B85C46;
       border: none;
       border-radius: 10px;
-      padding: 7px 11px;
+      padding: 7px 12px;
       font-family: inherit;
       font-size: 0.8rem;
       font-weight: 800;
@@ -346,9 +359,9 @@
       background: none;
       border: none;
       color: var(--muted);
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       cursor: pointer;
-      padding: 4px 8px;
+      padding: 6px 10px;
     }
 
     .add-shop-form {
@@ -357,23 +370,24 @@
       margin-bottom: 14px;
     }
     .add-shop-form input {
-      padding: 11px 12px;
+      padding: 12px;
       border-radius: 12px;
       border: 1.5px solid var(--border);
       background: var(--card);
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 16px;
       outline: none;
     }
-    .add-shop-form input:first-child { flex: 2; }
-    .add-shop-form input:nth-child(2) { flex: 1; width: 90px; }
+    .add-shop-form input:first-child { flex: 2; min-width: 0; }
+    .add-shop-form input:nth-child(2) { flex: 1; min-width: 80px; }
     .add-shop-form button {
       background: var(--primary);
       color: #fff;
       border: none;
       border-radius: 12px;
-      padding: 0 16px;
+      padding: 0 18px;
       font-family: inherit;
+      font-size: 1.2rem;
       font-weight: 800;
       cursor: pointer;
     }
@@ -382,14 +396,14 @@
     .fab {
       position: fixed;
       right: 20px;
-      bottom: 84px;
-      width: 58px;
-      height: 58px;
+      bottom: 88px;
+      width: 60px;
+      height: 60px;
       border-radius: 20px;
       background: var(--primary);
       color: #fff;
       border: none;
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 700;
       box-shadow: 0 8px 20px rgba(224, 138, 116, 0.45);
       cursor: pointer;
@@ -406,19 +420,19 @@
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-around;
-      padding: 10px 0 14px;
+      padding: 10px 0 16px;
       z-index: 25;
     }
     .nav-btn {
       background: none;
       border: none;
       font-family: inherit;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 800;
       color: var(--muted);
       cursor: pointer;
-      padding: 6px 20px;
-      border-radius: 12px;
+      padding: 8px 22px;
+      border-radius: 14px;
     }
     .nav-btn.active {
       background: var(--primary-soft);
@@ -442,26 +456,27 @@
       max-width: 560px;
       border-radius: 24px 24px 0 0;
       padding: 20px 18px 28px;
-      max-height: 90vh;
+      max-height: 92vh;
       overflow-y: auto;
     }
-    .modal h2 { margin: 0 0 14px; font-size: 1.15rem; font-weight: 800; }
+    .modal h2 { margin: 0 0 6px; font-size: 1.2rem; font-weight: 800; }
+    .modal-subtitle { margin: 0 0 14px; font-size: 0.84rem; color: var(--muted); }
     .form-group { margin-bottom: 12px; }
     .form-group label {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-weight: 700;
       color: var(--muted);
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
     .form-group input, .form-group select {
       width: 100%;
-      padding: 11px 13px;
+      padding: 12px 13px;
       border-radius: 12px;
       border: 1.5px solid var(--border);
       background: var(--card);
       font-family: inherit;
-      font-size: 0.95rem;
+      font-size: 16px;
       color: var(--text);
     }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -472,9 +487,9 @@
       color: #fff;
       border: none;
       border-radius: 14px;
-      padding: 13px;
+      padding: 14px;
       font-family: inherit;
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-weight: 800;
       cursor: pointer;
     }
@@ -484,9 +499,9 @@
       color: var(--text);
       border: 1.5px solid var(--border);
       border-radius: 14px;
-      padding: 13px;
+      padding: 14px;
       font-family: inherit;
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
     }
@@ -497,17 +512,18 @@
       color: var(--coral-text);
       border: none;
       border-radius: 12px;
-      padding: 11px;
+      padding: 12px;
       font-family: inherit;
+      font-size: 0.92rem;
       font-weight: 800;
       cursor: pointer;
     }
 
     .empty-state {
       text-align: center;
-      padding: 36px 16px;
+      padding: 32px 16px;
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.92rem;
     }
     .toast {
       position: fixed;
@@ -518,10 +534,11 @@
       color: #fff;
       padding: 10px 18px;
       border-radius: 99px;
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       font-weight: 700;
       z-index: 100;
       display: none;
+      white-space: nowrap;
     }
     .hidden { display: none !important; }
   </style>
@@ -551,17 +568,17 @@
     <!-- TAB 1: STOK FREEZER -->
     <section id="tabStok">
       <div class="summary-grid">
-        <div class="sum-card sum-aman">
+        <div class="sum-card sum-aman" id="cardAman" onclick="toggleStatusFilter('aman')">
           <div class="num" id="countAman">0</div>
-          <div class="lbl">Aman</div>
+          <div class="lbl">Aman (>7 hr)</div>
         </div>
-        <div class="sum-card sum-warning">
+        <div class="sum-card sum-warning" id="cardWarning" onclick="toggleStatusFilter('warning')">
           <div class="num" id="countWarning">0</div>
-          <div class="lbl">≤ 7 Hari</div>
+          <div class="lbl">Segera (≤7 hr)</div>
         </div>
-        <div class="sum-card sum-danger">
+        <div class="sum-card sum-danger" id="cardDanger" onclick="toggleStatusFilter('danger')">
           <div class="num" id="countDanger">0</div>
-          <div class="lbl">Expired / 0</div>
+          <div class="lbl">Exp / Habis</div>
         </div>
       </div>
 
@@ -583,13 +600,13 @@
     <!-- TAB 2: DAFTAR BELANJA -->
     <section id="tabBelanja" class="hidden">
       <div class="section-title">
-        <span>Perlu Restock (Stok ≤ 1)</span>
+        <span>Saran Restock (Stok 0 atau 1)</span>
       </div>
       <div id="restockList"></div>
 
       <div class="section-title">
         <span>Catatan Belanja Tambahan</span>
-        <button class="btn-sm" onclick="clearCheckedShop()">Hapus Dicentang</button>
+        <button class="btn-sm" onclick="clearCheckedShop()">Hapus yang Dicentang</button>
       </div>
       <form class="add-shop-form" onsubmit="addShopItem(event)">
         <input type="text" id="shopNama" placeholder="Nama barang..." required />
@@ -607,10 +624,11 @@
     <button class="nav-btn" id="navBelanja" onclick="switchTab('belanja')">🛒 Daftar Belanja</button>
   </nav>
 
-  <!-- MODAL TAMBAH / EDIT STOK -->
-  <div class="modal-backdrop" id="stockModal">
+  <!-- MODAL TAMBAH / EDIT / RESTOCK -->
+  <div class="modal-backdrop" id="stockModal" onclick="backdropClose(event)">
     <div class="modal">
       <h2 id="modalTitle">Tambah Bahan Baru</h2>
+      <p id="modalSubtitle" class="modal-subtitle hidden"></p>
       <form id="stockForm" onsubmit="saveStock(event)">
         <input type="hidden" id="fId" />
         <div class="form-group">
@@ -636,7 +654,7 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Jumlah Stok</label>
+            <label id="lblJumlah">Jumlah Stok</label>
             <input type="number" id="fJumlah" value="1" min="0" required />
           </div>
           <div class="form-group">
@@ -666,7 +684,7 @@
         </div>
         <div class="modal-actions">
           <button type="button" class="btn-secondary" onclick="closeModal()">Batal</button>
-          <button type="submit" class="btn-primary">Simpan</button>
+          <button type="submit" id="btnSubmitStock" class="btn-primary">Simpan</button>
         </div>
         <button type="button" id="btnDeleteStock" class="btn-danger-outline hidden" onclick="deleteCurrentStock()">Hapus Bahan Ini</button>
       </form>
@@ -680,6 +698,8 @@
     let stokData = [];
     let belanjaData = [];
     let activeFilter = 'Semua';
+    let activeStatusFilter = 'all'; // 'all' | 'aman' | 'warning' | 'danger'
+    const qtyTimers = {};
 
     const rpFormat = new Intl.NumberFormat('id-ID', {
       style: 'currency',
@@ -697,41 +717,68 @@
       t.textContent = msg;
       t.style.display = 'block';
       clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => t.style.display = 'none', 2200);
+      window._toastTimer = setTimeout(() => t.style.display = 'none', 2300);
     }
 
+    // Tanggal lokal YYYY-MM-DD (bebas bug UTC)
     function todayISO() {
       const d = new Date();
-      return d.toISOString().split('T')[0];
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
     }
 
+    // Hitung selisih hari secara aman di zona waktu lokal
     function daysUntil(dateStr) {
       if (!dateStr) return 999;
+      const clean = String(dateStr).trim().slice(0, 10);
+      const parts = clean.split('-');
+      if (parts.length !== 3) return 999;
+      const exp = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
       const now = new Date();
       now.setHours(0, 0, 0, 0);
-      const exp = new Date(dateStr + 'T00:00:00');
-      return Math.ceil((exp - now) / (1000 * 60 * 60 * 24));
+      return Math.round((exp - now) / (1000 * 60 * 60 * 24));
+    }
+
+    function getItemStatus(item) {
+      const qty = Number(item.jumlah) || 0;
+      const days = daysUntil(item.tglExpired);
+      if (qty <= 0 || days < 0) return 'danger';
+      if (days <= 7) return 'warning';
+      return 'aman';
     }
 
     async function apiPost(payload) {
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
-      });
-      return res.json();
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          redirect: 'follow',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (json.status !== 'success') {
+          showToast('Gagal: ' + (json.message || 'Cek Apps Script'));
+        }
+        return json;
+      } catch (err) {
+        showToast('Gagal menyimpan. Cek koneksi / URL!');
+        return { status: 'error' };
+      }
     }
 
     async function loadData() {
       const statusEl = document.getElementById('syncStatus');
       if (API_URL === 'PASTE_URL_WEB_APP_DISINI') {
         statusEl.textContent = 'Tempel Web App URL dulu di kode';
-        setTimeout(hideSplash, 700);
+        setTimeout(hideSplash, 600);
         return;
       }
       statusEl.textContent = 'Menyinkronkan...';
       try {
-        const res = await fetch(API_URL);
+        const url = API_URL + (API_URL.includes('?') ? '&' : '?') + 't=' + Date.now();
+        const res = await fetch(url, { redirect: 'follow' });
         const json = await res.json();
         if (json.status === 'success') {
           stokData = json.stok || [];
@@ -740,12 +787,12 @@
           renderStok();
           renderBelanja();
         } else {
-          statusEl.textContent = 'Gagal memuat data';
+          statusEl.textContent = 'Gagal: ' + (json.message || 'Cek nama sheet');
         }
       } catch (err) {
-        statusEl.textContent = 'Koneksi bermasalah';
+        statusEl.textContent = 'Koneksi bermasalah / URL salah';
       } finally {
-        setTimeout(hideSplash, 450);
+        setTimeout(hideSplash, 400);
       }
     }
 
@@ -756,14 +803,22 @@
       renderStok();
     }
 
+    function toggleStatusFilter(status) {
+      activeStatusFilter = activeStatusFilter === status ? 'all' : status;
+      document.getElementById('cardAman').classList.toggle('selected', activeStatusFilter === 'aman');
+      document.getElementById('cardWarning').classList.toggle('selected', activeStatusFilter === 'warning');
+      document.getElementById('cardDanger').classList.toggle('selected', activeStatusFilter === 'danger');
+      renderStok();
+    }
+
     function renderStok() {
       const q = document.getElementById('searchInput').value.toLowerCase();
       let aman = 0, warning = 0, danger = 0;
 
       stokData.forEach(item => {
-        const days = daysUntil(item.tglExpired);
-        if (Number(item.jumlah) <= 0 || days < 0) danger++;
-        else if (days <= 7) warning++;
+        const st = getItemStatus(item);
+        if (st === 'danger') danger++;
+        else if (st === 'warning') warning++;
         else aman++;
       });
 
@@ -773,34 +828,33 @@
 
       const filtered = stokData
         .filter(i => activeFilter === 'Semua' || i.kategori === activeFilter)
+        .filter(i => activeStatusFilter === 'all' || getItemStatus(i) === activeStatusFilter)
         .filter(i => (i.nama || '').toLowerCase().includes(q) || (i.catatan || '').toLowerCase().includes(q))
         .sort((a, b) => daysUntil(a.tglExpired) - daysUntil(b.tglExpired));
 
       const container = document.getElementById('stokList');
       if (!filtered.length) {
-        container.innerHTML = '<div class="empty-state">Belum ada bahan di kategori ini.</div>';
+        container.innerHTML = '<div class="empty-state">Tidak ada bahan yang cocok dengan filter ini.</div>';
         return;
       }
 
       container.innerHTML = filtered.map(item => {
         const days = daysUntil(item.tglExpired);
         const qty = Number(item.jumlah) || 0;
-        let statusClass = 'status-aman';
-        let badgeClass = 'badge-aman';
+        const st = getItemStatus(item);
+
+        let statusClass = 'status-' + st;
+        let badgeClass = 'badge-' + st;
         let statusLabel = `Exp ${item.tglExpired} (${days} hr)`;
 
         if (qty <= 0) {
-          statusClass = 'status-danger';
-          badgeClass = 'badge-danger';
           statusLabel = 'Stok Habis';
         } else if (days < 0) {
-          statusClass = 'status-danger';
-          badgeClass = 'badge-danger';
           statusLabel = `Lewat ${Math.abs(days)} hr (${item.tglExpired})`;
+        } else if (days === 0) {
+          statusLabel = 'Expired Hari Ini!';
         } else if (days <= 7) {
-          statusClass = 'status-warning';
-          badgeClass = 'badge-warning';
-          statusLabel = days === 0 ? 'Expired Hari Ini!' : `Sisa ${days} hr (${item.tglExpired})`;
+          statusLabel = `Sisa ${days} hr (${item.tglExpired})`;
         }
 
         return `
@@ -822,7 +876,7 @@
                 <span class="qty-text">${qty} ${escapeHtml(item.satuan)}</span>
                 <button class="btn-qty" onclick="changeQty('${item.id}', 1)">+</button>
               </div>
-              <button class="btn-edit" onclick="openModal('${item.id}')">Edit</button>
+              <button class="btn-edit" onclick="openModal('${item.id}', false)">Edit</button>
             </div>
           </div>
         `;
@@ -833,7 +887,7 @@
       const restockEl = document.getElementById('restockList');
       const lowItems = stokData.filter(i => Number(i.jumlah) <= 1);
       if (!lowItems.length) {
-        restockEl.innerHTML = '<div class="empty-state" style="padding:14px;">Semua stok freezer masih aman (> 1).</div>';
+        restockEl.innerHTML = '<div class="empty-state" style="padding:14px;">Semua stok freezer masih aman (lebih dari 1).</div>';
       } else {
         restockEl.innerHTML = lowItems.map(item => `
           <div class="restock-card">
@@ -841,7 +895,7 @@
               <div class="shop-name">${escapeHtml(item.nama)}</div>
               <div class="shop-qty">Sisa: ${item.jumlah} ${escapeHtml(item.satuan)} • ${rpFormat.format(Number(item.harga) || 0)}</div>
             </div>
-            <button class="btn-sm" onclick="openModal('${item.id}')">+ Restock</button>
+            <button class="btn-restock" onclick="openModal('${item.id}', true)">Masukkan ke Freezer</button>
           </div>
         `).join('');
       }
@@ -851,7 +905,7 @@
         shopEl.innerHTML = '<div class="empty-state" style="padding:18px;">Belum ada catatan belanja tambahan.</div>';
       } else {
         shopEl.innerHTML = belanjaData.map(item => {
-          const isDone = item.status === 'Sudah';
+          const isDone = item.status === 'Sudah' || item.status === 'Selesai';
           return `
             <div class="shop-item ${isDone ? 'checked' : ''}">
               <div class="shop-left" onclick="toggleShop('${item.id}')">
@@ -868,41 +922,69 @@
       }
     }
 
-    async function changeQty(id, delta) {
+    // Debounce agar klik +/- berulang tetap sinkron akurat
+    function changeQty(id, delta) {
       const item = stokData.find(i => i.id === id);
       if (!item) return;
       const newQty = Math.max(0, (Number(item.jumlah) || 0) + delta);
       item.jumlah = newQty;
       renderStok();
       renderBelanja();
-      showToast('Stok diperbarui');
-      await apiPost({ action: 'updateQty', id, jumlah: newQty });
+
+      clearTimeout(qtyTimers[id]);
+      qtyTimers[id] = setTimeout(async () => {
+        showToast('Menyimpan stok...');
+        const res = await apiPost({ action: 'updateQty', id, jumlah: item.jumlah });
+        if (res.status === 'success') showToast('Stok tersimpan');
+      }, 500);
     }
 
-    function openModal(id = null) {
+    function openModal(id = null, isRestock = false) {
       const modal = document.getElementById('stockModal');
       const title = document.getElementById('modalTitle');
+      const subtitle = document.getElementById('modalSubtitle');
       const btnDel = document.getElementById('btnDeleteStock');
+      const btnSubmit = document.getElementById('btnSubmitStock');
+      const lblJumlah = document.getElementById('lblJumlah');
 
       if (id) {
         const item = stokData.find(i => i.id === id);
         if (!item) return;
-        title.textContent = 'Edit Bahan';
         document.getElementById('fId').value = item.id;
         document.getElementById('fNama').value = item.nama;
         document.getElementById('fKategori').value = item.kategori;
         document.getElementById('fHarga').value = item.harga || 0;
-        document.getElementById('fJumlah').value = item.jumlah;
         document.getElementById('fSatuan').value = item.satuan;
-        document.getElementById('fTglMasuk').value = item.tglMasuk || todayISO();
-        document.getElementById('fTglExpired').value = item.tglExpired || '';
         document.getElementById('fCatatan').value = item.catatan || '';
-        btnDel.classList.remove('hidden');
+
+        if (isRestock) {
+          title.textContent = 'Masukkan ke Freezer';
+          subtitle.textContent = 'Masukkan jumlah stok baru dan tanggal expired terbaru.';
+          subtitle.classList.remove('hidden');
+          lblJumlah.textContent = 'Jumlah Stok Baru';
+          document.getElementById('fJumlah').value = '';
+          document.getElementById('fTglMasuk').value = todayISO();
+          document.getElementById('fTglExpired').value = '';
+          btnSubmit.textContent = 'Masukkan ke Freezer';
+          btnDel.classList.add('hidden');
+        } else {
+          title.textContent = 'Edit Bahan';
+          subtitle.classList.add('hidden');
+          lblJumlah.textContent = 'Jumlah Stok';
+          document.getElementById('fJumlah').value = item.jumlah;
+          document.getElementById('fTglMasuk').value = item.tglMasuk || todayISO();
+          document.getElementById('fTglExpired').value = item.tglExpired || '';
+          btnSubmit.textContent = 'Simpan Perubahan';
+          btnDel.classList.remove('hidden');
+        }
       } else {
         title.textContent = 'Tambah Bahan Baru';
+        subtitle.classList.add('hidden');
+        lblJumlah.textContent = 'Jumlah Stok';
         document.getElementById('stockForm').reset();
         document.getElementById('fId').value = '';
         document.getElementById('fTglMasuk').value = todayISO();
+        btnSubmit.textContent = 'Simpan ke Freezer';
         btnDel.classList.add('hidden');
       }
       modal.classList.add('open');
@@ -910,6 +992,10 @@
 
     function closeModal() {
       document.getElementById('stockModal').classList.remove('open');
+    }
+
+    function backdropClose(e) {
+      if (e.target.id === 'stockModal') closeModal();
     }
 
     async function saveStock(e) {
@@ -929,9 +1015,11 @@
 
       closeModal();
       showToast('Menyimpan data...');
-      await apiPost({ action: id ? 'updateStock' : 'addStock', data });
-      await loadData();
-      showToast('Tersimpan!');
+      const res = await apiPost({ action: id ? 'updateStock' : 'addStock', data });
+      if (res.status === 'success') {
+        await loadData();
+        showToast('Tersimpan!');
+      }
     }
 
     async function deleteCurrentStock() {
@@ -939,8 +1027,8 @@
       if (!id || !confirm('Hapus bahan ini dari freezer?')) return;
       closeModal();
       showToast('Menghapus...');
-      await apiPost({ action: 'deleteStock', id });
-      await loadData();
+      const res = await apiPost({ action: 'deleteStock', id });
+      if (res.status === 'success') await loadData();
     }
 
     async function addShopItem(e) {
@@ -951,14 +1039,15 @@
       document.getElementById('shopNama').value = '';
       document.getElementById('shopQty').value = '';
       showToast('Menambahkan...');
-      await apiPost({ action: 'addShop', namaItem, jumlahBeli });
-      await loadData();
+      const res = await apiPost({ action: 'addShop', namaItem, jumlahBeli });
+      if (res.status === 'success') await loadData();
     }
 
     async function toggleShop(id) {
       const item = belanjaData.find(i => i.id === id);
       if (!item) return;
-      item.status = item.status === 'Sudah' ? 'Belum' : 'Sudah';
+      const isDone = item.status === 'Sudah' || item.status === 'Selesai';
+      item.status = isDone ? 'Belum' : 'Sudah';
       renderBelanja();
       await apiPost({ action: 'toggleShop', id });
     }
@@ -972,8 +1061,8 @@
     async function clearCheckedShop() {
       if (!confirm('Hapus semua item belanja yang sudah dicentang?')) return;
       showToast('Membersihkan...');
-      await apiPost({ action: 'clearCheckedShop' });
-      await loadData();
+      const res = await apiPost({ action: 'clearCheckedShop' });
+      if (res.status === 'success') await loadData();
     }
 
     function switchTab(tab) {
@@ -983,6 +1072,7 @@
       document.getElementById('fabAdd').classList.toggle('hidden', !isStok);
       document.getElementById('navStok').classList.toggle('active', isStok);
       document.getElementById('navBelanja').classList.toggle('active', !isStok);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function escapeHtml(str) {
